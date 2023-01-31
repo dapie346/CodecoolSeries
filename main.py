@@ -12,7 +12,6 @@ app = Flask('codecool_series')
 @app.route('/')
 def index():
     shows = queries.get_shows()
-    print(shows)
     return render_template('index.html', shows=shows)
 
 
