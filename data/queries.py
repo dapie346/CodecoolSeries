@@ -5,14 +5,23 @@ def get_shows():
     return data_manager.execute_select('SELECT id, title FROM shows;')
 
 
-def get_most_rated():
+def get_highest_rated():
     return data_manager.execute_select(
         """
-        SELECT shows.id, shows.title, shows.year, shows.runtime, shows.rating, genres.name
+        SELECT shows.id as show_id, shows.title, shows.year, shows.runtime, shows.trailer, shows.homepage, AVG(shows.rating) as rating,
+       string_agg(genres.name, ', ') as genres
         FROM shows
         JOIN show_genres ON shows.id = show_genres.show_id
         JOIN genres ON show_genres.genre_id = genres.id
-        ORDER BY shows.rating
-        DESC 
+        GROUP BY shows.id, shows.title, shows.year, shows.runtime, shows.trailer, shows.homepage
+        ORDER BY AVG(shows.rating) DESC
         LIMIT 15;
         """)
+
+
+def get_show_by_id(show_id):
+    return data_manager.execute_select(
+        """
+        SELECT * FROM shows WHERE id= %(show_id)s;
+        """
+        , {'id': show_id})

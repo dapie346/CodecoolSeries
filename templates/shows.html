@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block tabtitle %}
+    Codecool Series Database
+{% endblock %}
+{% block title %}
+    Codecool Series Database
+{% endblock %}
+{% block content %}
+    <h1 class="title text-center">Shows</h1>
+    <div class="card">
+        <table>
+        <tr>
+            <th>Title</th>
+            <th>Year</th>
+            <th>Runtime (min)</th>
+            <th>Rating</th>
+            <th>Genres</th>
+            <th>Trailer</th>
+            <th>Homepage</th>
+            <th class="action-column">Actions</th>
+        </tr>
+        {% for show in shows %}
+        <tr>
+            <td><a href="{{ url_for('display_show', show_id=show.show_id) }}">{{ show.title }}</a></td>
+            <td>{{ show.year }}</td>
+            <td>{{ show.runtime }}</td>
+            <td>{{ show.rating }}</td>
+            <td>{{ show.genres }}</td>
+            <td>
+              {% if show.trailer %}
+                <a href="{{ show.trailer }}">Link</a>
+              {% else %}
+                No URL
+              {% endif %}
+            </td>
+            <td>
+              {% if show.homepage %}
+                <a href="{{ show.homepage }}">Link</a>
+              {% else %}
+                No URL
+              {% endif %}
+            </td>
+            <td class="action-column">
+                <button type="button" class="icon-button"><i class="fa fa-edit fa-fw"></i></button>
+                <button type="button" class="icon-button"><i class="fa fa-trash fa-fw"></i></button>
+            </td>
+        </tr>
+        {% endfor %}
+        </table>
+    </div>
+{% endblock %}
