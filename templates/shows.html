@@ -54,7 +54,7 @@
         <div class="pagination">
             <a href="{{ request.base_url }}?page={{ page - 1 }}" {% if page == 1 %}style="display: none;"{% endif %}><<</a>
             {% for number in range(1, total//per_page + 2) %}
-                {% if number in range (page - 5, page + 6) %}
+                {% if number in range (page - 2, page + 3) %}
                     <a href="{{ request.base_url }}?page={{ number }}" {% if number == page %}class="active" {% endif %}>{{ number }}</a>
                 {% endif %}
             {% endfor %}
