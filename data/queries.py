@@ -15,7 +15,7 @@ def get_highest_rated():
         JOIN genres ON show_genres.genre_id = genres.id
         GROUP BY shows.id, shows.title, shows.year, shows.runtime, shows.trailer, shows.homepage
         ORDER BY AVG(shows.rating) DESC
-        LIMIT 15;
+        
         """)
 
 
@@ -24,4 +24,4 @@ def get_show_by_id(show_id):
         """
         SELECT * FROM shows WHERE id= %(show_id)s;
         """
-        , {'id': show_id})
+        , {'show_id': show_id})
