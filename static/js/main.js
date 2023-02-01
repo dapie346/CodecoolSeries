@@ -13,8 +13,21 @@ async function addListeners() {
     const columns = document.querySelectorAll('th.column');
     columns.forEach(column  => {
         column.addEventListener('click', async () => {
-            document.querySelector('.sorting-type').classList.remove('sorting-type');
-            column.classList.add('sorting-type');
+            if (column.classList.contains('sorting-type')){
+                if (column.classList.contains('descending')){
+                    column.classList.remove('descending');
+                    column.classList.add('ascending');
+                }
+                else if (column.classList.contains('ascending')){
+                    column.classList.remove('ascending');
+                    column.classList.add('descending');
+                }
+            }
+            else {
+                document.querySelector('.sorting-type').classList.remove('sorting-type');
+                column.classList.add('sorting-type');
+                column.classList.add('descending');
+            }
             let page = getActivePageNumber();
             await generateTable(String(page))
         });
@@ -22,7 +35,18 @@ async function addListeners() {
     const pagination = document.querySelectorAll('.pagination li');
     pagination.forEach(paginationPage  => {
         paginationPage.addEventListener('click', async () => {
-            let page = paginationPage.innerHTML;
+            let clickedPage = paginationPage.innerHTML;
+            let page;
+            if (clickedPage === '&lt;&lt;'){
+                page = Number(getActivePageNumber()) - 1;
+            }
+            else if (clickedPage === '&gt;&gt;'){
+                page = Number(getActivePageNumber()) + 1;
+
+            }
+            else {
+                page = clickedPage;
+            }
             document.querySelector('.active').classList.remove('active');
             await generateTable(String(page));
         });
@@ -34,15 +58,33 @@ function getActivePageNumber() {
 }
 
 async function generateTable(page){
+    let sorting_order;
+
+
+
     let shows;
     let sorting_type;
+    let order_mark;
     if (!firstPageRun) {
         sorting_type = document.querySelector('.sorting-type').id;
+        if (document.querySelector('.sorting-type').classList.contains('descending')) {
+            sorting_order = 'descending';
+            order_mark = '  ⇧';
+        }
+        else {
+            sorting_order = 'ascending';
+            order_mark = '  ⇩';
+        }
     }
     else {
         sorting_type = 'rating';
+        sorting_order = 'descending'
+        order_mark = '  ⇧';
     }
     shows = await getShows(sorting_type);
+    if (sorting_order === 'ascending'){
+        shows.reverse();
+    }
     const shows_total = shows.length;
     const shows_per_page = 15;
 
@@ -55,7 +97,7 @@ async function generateTable(page){
             <th class="column" id="runtime">Runtime (min)</th>
             <th class="column`
     if (firstPageRun) {
-        tableContent += ` sorting-type`
+        tableContent += ` sorting-type descending`
         firstPageRun = false;
     }
     tableContent += `" id="rating">Rating</th>
@@ -98,7 +140,7 @@ async function generateTable(page){
     })
 
     let paginationContent = `<ul class="pagination">
-            <li href=""`
+            <li `
     if (Number(page) === 1) {
         paginationContent +=`style="display: none;"`
     }
@@ -130,6 +172,8 @@ async function generateTable(page){
     columns.forEach(column  => {
         if (column.id === sorting_type) {
             column.classList.add('sorting-type');
+            column.classList.add(sorting_order);
+            column.innerHTML += order_mark;
         }
     })
 
