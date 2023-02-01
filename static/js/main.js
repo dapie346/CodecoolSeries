@@ -104,7 +104,6 @@ async function generateTable(page){
             <th>Genres</th>
             <th>Trailer</th>
             <th>Homepage</th>
-            <th class="action-column">Actions</th>
         </tr>`
 
     paginatedShows.forEach(show=> {
@@ -131,10 +130,6 @@ async function generateTable(page){
             tableContent += `No URL`;
         }
         tableContent += `</td>
-            <td class="action-column">
-                <button type="button" class="icon-button"><i class="fa fa-edit fa-fw"></i></button>
-                <button type="button" class="icon-button"><i class="fa fa-trash fa-fw"></i></button>
-            </td>
         </tr>`
         }
     })

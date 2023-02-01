@@ -48,9 +48,10 @@ def highest_rated():
 @app.route('/show/<int:show_id>', methods=['GET'])
 def display_show(show_id):
     displayed_show = queries.get_show_by_id(show_id)
+    seasons = queries.get_seasons_by_show_id(show_id)
     if displayed_show:
         show = change_format(displayed_show[0])
-        return render_template("show.html", show=show)
+        return render_template("show.html", show=show, seasons=seasons)
     else:
         return "Show not found", 404
 

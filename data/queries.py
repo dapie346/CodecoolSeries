@@ -89,3 +89,13 @@ def get_show_by_id(show_id):
             shows.id, shows.rating, shows.trailer, shows.overview, shows.year;
         """
         , {'show_id': show_id})
+
+
+def get_seasons_by_show_id(show_id):
+    return data_manager.execute_select(
+        """
+        SELECT season_number, title, overview
+        FROM seasons
+        WHERE show_id = %(show_id)s;
+        """
+        , {'show_id': show_id})

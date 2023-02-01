@@ -30,4 +30,25 @@
             <p><b>Stars: </b>{{ show['actors'] }}</p>
         </div>
     </div>
+    <div class="card">
+    <h4 style="text-align: center">Seasons</h4>
+    <table>
+        <thead>
+            <tr>
+                <th> </th>
+                <th>Title</th>
+                <th>Overview</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for season in seasons %}
+            <tr>
+                <td>{{ season['season_number'] }}</td>
+                <td>{{ season['title'] }}</td>
+                <td>{{ season['overview'] }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
 {% endblock %}
