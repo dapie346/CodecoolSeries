@@ -1,10 +1,33 @@
 {% extends 'base.html' %}
+{% block script %}
+    <script src="{{ url_for('static', filename='js/embed-youtube.js') }}"></script>
+{% endblock %}
 {% block tabtitle %}
-    Show
+    Codecool Series Database
 {% endblock %}
 {% block title %}
-    Show
+    Codecool Series Database
 {% endblock %}
 {% block content %}
-    <p>placeholder</p>
+    <nav class="breadcrumb">
+        <a href="#">{{ show['title'] }}</a>
+    </nav>
+    <h1 class="title text-center">Detailed view</h1>
+    <div class="card detailed-view">
+        <div class="row">
+            {% if show['trailer'] %}
+                <div id="player" class="col col-third" data-videoid="{{ show['trailer'] }}"></div>
+            {% endif %}
+            <div class="col col-twothird">
+                <h2>{{ show['title'] }}</h2>
+                <h1>☆ {{ show['rating'] }}</h1>
+                <p class="small grayed">{{ show['avg_runtime'] }}<span class="separator">|</span>{{ show['genres'] }}<span
+                        class="separator">|</span>{{ show['year'] }}</p>
+                <p>{{ show['overview'] }}</p>
+            </div>
+        </div>
+        <div>
+            <p><b>Stars: </b>{{ show['actors'] }}</p>
+        </div>
+    </div>
 {% endblock %}

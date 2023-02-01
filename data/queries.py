@@ -64,6 +64,28 @@ def get_by_year():
 def get_show_by_id(show_id):
     return data_manager.execute_select(
         """
-        SELECT * FROM shows WHERE id= %(show_id)s;
+        SELECT
+            AVG(shows.runtime) AS avg_runtime,
+            shows.rating AS rating,
+            STRING_AGG(DISTINCT genres.name, ', ' ORDER BY genres.name) AS genres,
+            STRING_AGG(DISTINCT actors.name, ', ' ORDER BY actors.name) AS actors,
+            shows.title,
+            shows.trailer,
+            shows.overview,
+            shows.year
+        FROM
+            shows
+        JOIN
+            show_genres ON show_genres.show_id = shows.id
+        JOIN
+            genres ON genres.id = show_genres.genre_id
+        JOIN
+            show_characters ON show_characters.show_id = shows.id
+        JOIN
+            actors ON actors.id = show_characters.actor_id
+        WHERE
+            shows.id = %(show_id)s
+        GROUP BY
+            shows.id, shows.rating, shows.trailer, shows.overview, shows.year;
         """
         , {'show_id': show_id})

@@ -27,7 +27,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style/utils.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style/pagination.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style/detailed-view.css') }}">
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block script %}
+    {% endblock %}
 </head>
 
 <body>

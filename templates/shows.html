@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% block script %}
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}
 {% block tabtitle %}
     Codecool Series Database
 {% endblock %}

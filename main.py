@@ -3,6 +3,7 @@ from data import queries
 import math
 from functools import wraps
 from dotenv import load_dotenv
+from data_formatter import change_format
 
 load_dotenv()
 
@@ -48,9 +49,11 @@ def highest_rated():
 def display_show(show_id):
     displayed_show = queries.get_show_by_id(show_id)
     if displayed_show:
-        return render_template("show.html", show=displayed_show)
+        show = change_format(displayed_show[0])
+        return render_template("show.html", show=show)
     else:
         return "Show not found", 404
+
 
 def main():
     app.run(debug=False)
