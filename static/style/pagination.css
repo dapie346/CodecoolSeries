@@ -1,22 +1,28 @@
 /* Pagination links */
 .pagination{
-   width: 100%;
-   margin-top: 5px;
-   text-align: center;
- }
- .pagination a {
-   color: black;
-   padding: 10px;
-   line-height: 3;
-   text-decoration: none;
-   transition: background-color .3s;
- }
+
+    width: 100%;
+    margin-top: 5px;
+    text-align: center;
+
+}
+.pagination li {
+    color: black;
+    padding: 10px;
+    line-height: 3;
+    text-decoration: none;
+    transition: background-color .3s;
+    list-style: none;
+    display: inline-block;
+    cursor: pointer;
+    user-select: none;
+}
 
  /* Style the active/current link */
- .pagination a.active {
+ .pagination li.active {
    background-color: dodgerblue;
    color: white;
  }
 
  /* Add a grey background color on mouse-over */
- .pagination a:hover:not(.active) {background-color: #ddd;}
+ .pagination li:hover:not(.active) {background-color: #ddd;}

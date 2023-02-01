@@ -1,6 +1,7 @@
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, redirect, jsonify
 from data import queries
 import math
+from functools import wraps
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -9,10 +10,16 @@ load_dotenv()
 app = Flask('codecool_series')
 
 
+def json_response(func):
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+        return jsonify(func(*args, **kwargs))
+    return decorated_function
+
+
 @app.route('/')
 def index():
-    shows = queries.get_shows()
-    return render_template('index.html', shows=shows)
+    return redirect(url_for('highest_rated'))
 
 
 @app.route('/design')
@@ -20,20 +27,21 @@ def design():
     return render_template('design.html')
 
 
+@app.route('/shows/<sorting_type>/', methods=['GET'])
+def shows_page(sorting_type):
+    if sorting_type == 'title':
+        return queries.get_by_title()
+    if sorting_type == 'year':
+        return queries.get_by_year()
+    elif sorting_type == 'runtime':
+        return queries.get_by_runtime()
+    elif sorting_type == 'rating':
+        return queries.get_by_rating()
+
+
 @app.route('/shows/most-rated', methods=['GET'])
 def highest_rated():
-    page = request.args.get('page', 1, type=int)
-    per_page = 15
-    shows = queries.get_highest_rated()
-    for show in shows:
-        show['rating'] = "{:.1f}".format(show['rating'])
-        show['year'] = str(show['year'])[:4]
-    if shows:
-        total = len(shows)
-        paginated_shows = shows[(page - 1) * per_page:page * per_page]
-        return render_template('shows.html', shows=paginated_shows, page=page, per_page=per_page, total=total)
-    else:
-        return "Shows not found", 404
+    return render_template('shows.html')
 
 
 @app.route('/show/<int:show_id>', methods=['GET'])
@@ -43,7 +51,6 @@ def display_show(show_id):
         return render_template("show.html", show=displayed_show)
     else:
         return "Show not found", 404
-
 
 def main():
     app.run(debug=False)

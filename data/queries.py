@@ -5,7 +5,7 @@ def get_shows():
     return data_manager.execute_select('SELECT id, title FROM shows;')
 
 
-def get_highest_rated():
+def get_by_rating():
     return data_manager.execute_select(
         """
         SELECT shows.id as show_id, shows.title, shows.year, shows.runtime, shows.trailer, shows.homepage, AVG(shows.rating) as rating,
@@ -16,6 +16,48 @@ def get_highest_rated():
         GROUP BY shows.id, shows.title, shows.year, shows.runtime, shows.trailer, shows.homepage
         ORDER BY AVG(shows.rating) DESC
         
+        """)
+
+
+def get_by_runtime():
+    return data_manager.execute_select(
+        """
+        SELECT shows.id as show_id, shows.title, shows.year, shows.runtime, shows.trailer, shows.homepage, AVG(shows.rating) as rating,
+       string_agg(genres.name, ', ') as genres
+        FROM shows
+        JOIN show_genres ON shows.id = show_genres.show_id
+        JOIN genres ON show_genres.genre_id = genres.id
+        GROUP BY shows.id, shows.title, shows.year, shows.runtime, shows.trailer, shows.homepage
+        ORDER BY shows.runtime DESC
+
+        """)
+
+
+def get_by_title():
+    return data_manager.execute_select(
+        """
+        SELECT shows.id as show_id, shows.title, shows.year, shows.runtime, shows.trailer, shows.homepage, 
+        AVG(shows.rating) as rating, string_agg(genres.name, ', ') as genres
+        FROM shows
+        JOIN show_genres ON shows.id = show_genres.show_id
+        JOIN genres ON show_genres.genre_id = genres.id
+        GROUP BY shows.id, shows.title, shows.year, shows.runtime, shows.trailer, shows.homepage
+        ORDER BY shows.title DESC
+
+        """)
+
+
+def get_by_year():
+    return data_manager.execute_select(
+        """
+        SELECT shows.id as show_id, shows.title, shows.year, shows.runtime, shows.trailer, shows.homepage, AVG(shows.rating) as rating,
+       string_agg(genres.name, ', ') as genres
+        FROM shows
+        JOIN show_genres ON shows.id = show_genres.show_id
+        JOIN genres ON show_genres.genre_id = genres.id
+        GROUP BY shows.id, shows.title, shows.year, shows.runtime, shows.trailer, shows.homepage
+        ORDER BY shows.year DESC
+
         """)
 
 
